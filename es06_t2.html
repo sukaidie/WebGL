@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>es06_task02</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="js/three.js"></script>
+		<script>
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+      camera.position.z = 10;
+
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setClearColor(0x3a3a3a);
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+// one Cube unit
+        var geo=new THREE.CubeGeometry(2,2,2);
+        var cubeMaterial = new THREE.MeshFaceMaterial( [
+            new THREE.MeshPhongMaterial( { color: "blue" } ),     // for the +x face
+            new THREE.MeshPhongMaterial( { color: "green" } ),    // for the -x face
+            new THREE.MeshPhongMaterial( { color: "red" } ),   // for the +y face
+            new THREE.MeshPhongMaterial( { color: "orange" } ), // for the -y face
+            new THREE.MeshPhongMaterial( { color: "yellow" } ),    // for the +z face
+            new THREE.MeshPhongMaterial( { color: "white" } )   // for the -z face
+        ] );
+
+//define the wireframe of one Cube unit
+				var mat = new THREE.LineBasicMaterial( { color: 0x000000, linewidth: 10 } );
+
+//set each cube in certain position and its wireframe
+        var cube1 = new THREE.Mesh( geo, cubeMaterial );
+        cube1.position.set( 1, 1, -1 );
+				var edge1 = new THREE.EdgesGeometry( cube1.geometry );
+				var wireframe1 = new THREE.LineSegments( edge1, mat );
+				cube1.add( wireframe1 );
+
+        var cube2 = new THREE.Mesh( geo, cubeMaterial );
+        cube2.position.set( -1, 1, -1 );
+				var edge2 = new THREE.EdgesGeometry( cube2.geometry );
+				var wireframe2 = new THREE.LineSegments( edge2, mat );
+				cube2.add( wireframe2 );
+
+        var cube3 = new THREE.Mesh( geo, cubeMaterial );
+        cube3.position.set( 1, -1, -1 );
+				var edge3 = new THREE.EdgesGeometry( cube3.geometry );
+				var wireframe3 = new THREE.LineSegments( edge3, mat );
+				cube3.add( wireframe3 );
+
+        var cube4 = new THREE.Mesh( geo, cubeMaterial );
+        cube4.position.set( -1, -1, -1 );
+				var edge4 = new THREE.EdgesGeometry( cube4.geometry );
+				var wireframe4 = new THREE.LineSegments( edge4, mat );
+				cube4.add( wireframe4 );
+
+        var cube5 = new THREE.Mesh( geo, cubeMaterial );
+        cube5.position.set( 1, 1, 1 );
+				var edge5 = new THREE.EdgesGeometry( cube5.geometry );
+				var wireframe5 = new THREE.LineSegments( edge5, mat );
+				cube5.add( wireframe5 );
+
+        var cube6 = new THREE.Mesh( geo, cubeMaterial );
+        cube6.position.set( -1, 1, 1 );
+				var edge6 = new THREE.EdgesGeometry( cube6.geometry );
+				var wireframe6 = new THREE.LineSegments( edge6, mat );
+				cube6.add( wireframe6 );
+
+        var cube7 = new THREE.Mesh( geo, cubeMaterial );
+        cube7.position.set( 1, -1, 1 );
+				var edge7 = new THREE.EdgesGeometry( cube7.geometry );
+				var wireframe7 = new THREE.LineSegments( edge7, mat );
+				cube7.add( wireframe7 );
+
+        var cube8 = new THREE.Mesh( geo, cubeMaterial );
+        cube8.position.set( -1, -1, 1 );
+				var edge8 = new THREE.EdgesGeometry( cube8.geometry );
+				var wireframe8 = new THREE.LineSegments( edge8, mat );
+				cube8.add( wireframe8 );
+
+//group all the cubes
+        var group = new THREE.Group();
+        group.add( cube1 );
+        group.add( cube2 );
+        group.add( cube3 );
+        group.add( cube4 );
+        group.add( cube5 );
+        group.add( cube6 );
+        group.add( cube7 );
+        group.add( cube8 );
+        scene.add( group );
+
+//add ambient Light
+      var ambientLight = new THREE.AmbientLight( 0xbfbfbf );
+      scene.add( ambientLight );
+
+//add animate function
+			var animate = function () {
+				requestAnimationFrame( animate );
+        group.rotation.x += 0.01;
+				group.rotation.y -= 0.01;
+				renderer.render(scene, camera);
+			};
+			animate();
+		</script>
+	</body>
+</html>
