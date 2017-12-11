@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>es07_task01</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="js/three.js"></script>
+		<script>
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+      camera.position.z = 5;
+			//camera.position.set(0,-35,10);
+			//var controls = new THREE.OrbitControls( camera );
+
+			camera.position.set(0,-35,10);
+			//controls.update();
+			camera.lookAt(scene.position);
+
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setClearColor(0x000000);
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+
+
+//creat floor texture
+			var loader=new THREE.TextureLoader();
+			var texture_floor=loader.load("textures/hardwood2_diffuse.jpg");
+			texture_floor.anisotropy=1;
+			texture_floor.wrapS=texture_floor.wrapT=THREE.RepeatWrapping;
+			texture_floor.repeat.set(15,15);
+//add floor material
+			var mat_floor = new THREE.MeshPhongMaterial({
+				color: 0xffffff,
+				//wireframe:true,
+				map: texture_floor
+			});
+//build floor
+			var pgeometry=new THREE.PlaneGeometry(100,100);
+			var floor=new THREE.Mesh(pgeometry,mat_floor);
+			//floor.rotation.x=-Math.PI/2.5;
+			//scene.add(floor);
+
+//add tree and ball texture
+			var texture_ball_blue=loader.load("textures/ball_blue.jpg");
+			var texture_ball_red=loader.load("textures/ball_red.jpg");
+			var texture_ball_yellow=loader.load("textures/ball_yellow.jpg");
+			var texture_tree_body=loader.load("textures/tree_body.jpg");
+
+//add material
+      var mat_1 = new THREE.MeshPhongMaterial({
+				color: 0x38761D
+			});
+			var mat_ball_blue = new THREE.MeshPhongMaterial({
+				color: 0xffffff,
+				map: texture_ball_blue
+			});
+			var mat_ball_red = new THREE.MeshPhongMaterial({
+				color: 0xffffff,
+				map: texture_ball_red
+			});
+			var mat_ball_yellow = new THREE.MeshPhongMaterial({
+				color: 0xffffff,
+				map: texture_ball_yellow
+			});
+
+			var mat_tree_body = new THREE.MeshPhongMaterial( { map: texture_tree_body } );
+			var materials = [
+			           new THREE.MeshPhongMaterial({
+			               map: THREE.ImageUtils.loadTexture('textures/gift_sides.jpg')
+			           }),
+			           new THREE.MeshPhongMaterial({
+			               map: THREE.ImageUtils.loadTexture('textures/gift_sides.jpg')
+			           }),
+			           new THREE.MeshPhongMaterial({
+			               map: THREE.ImageUtils.loadTexture('textures/gift_top.jpg')
+			           }),
+			           new THREE.MeshPhongMaterial({
+			               map: THREE.ImageUtils.loadTexture('textures/gift_top.jpg')
+			           }),
+			           new THREE.MeshPhongMaterial({
+			               map: THREE.ImageUtils.loadTexture('textures/gift_sides.jpg')
+			           }),
+			           new THREE.MeshPhongMaterial({
+			               map: THREE.ImageUtils.loadTexture('textures/gift_sides.jpg')
+			           })
+			];
+			var materials_2 = [
+								 new THREE.MeshPhongMaterial({
+										 map: THREE.ImageUtils.loadTexture('textures/gift2_sides.jpg')
+								 }),
+								 new THREE.MeshPhongMaterial({
+										 map: THREE.ImageUtils.loadTexture('textures/gift2_sides.jpg')
+								 }),
+								 new THREE.MeshPhongMaterial({
+										 map: THREE.ImageUtils.loadTexture('textures/gift2_top.jpg')
+								 }),
+								 new THREE.MeshPhongMaterial({
+										 map: THREE.ImageUtils.loadTexture('textures/gift2_top.jpg')
+								 }),
+								 new THREE.MeshPhongMaterial({
+										 map: THREE.ImageUtils.loadTexture('textures/gift2_sides.jpg')
+								 }),
+								 new THREE.MeshPhongMaterial({
+										 map: THREE.ImageUtils.loadTexture('textures/gift2_sides.jpg')
+								 })
+			];
+			var materials_3 = [
+								 new THREE.MeshPhongMaterial({
+										 map: THREE.ImageUtils.loadTexture('textures/gift3_sides.jpg')
+								 }),
+								 new THREE.MeshPhongMaterial({
+										 map: THREE.ImageUtils.loadTexture('textures/gift3_sides.jpg')
+								 }),
+								 new THREE.MeshPhongMaterial({
+										 map: THREE.ImageUtils.loadTexture('textures/gift3_top.jpg')
+								 }),
+								 new THREE.MeshPhongMaterial({
+										 map: THREE.ImageUtils.loadTexture('textures/gift3_top.jpg')
+								 }),
+								 new THREE.MeshPhongMaterial({
+										 map: THREE.ImageUtils.loadTexture('textures/gift3_sides.jpg')
+								 }),
+								 new THREE.MeshPhongMaterial({
+										 map: THREE.ImageUtils.loadTexture('textures/gift3_sides.jpg')
+								 })
+			];
+
+
+//add tree body
+			var geo=new THREE.CylinderGeometry(4,4,4,32);
+			var c0=new THREE.Mesh(geo,mat_tree_body);
+			c0.rotateX(-Math.PI/2);
+			c0.position.set(0,0,2);
+//add tree1
+			var geo=new THREE.CylinderGeometry(12,6,6,32);
+			var c1=new THREE.Mesh(geo,mat_1);
+			c1.rotateX(-Math.PI/2);
+			c1.position.set(0,0,7);
+//add tree2
+			var geo=new THREE.CylinderGeometry(10,4,6,32);
+			var c2=new THREE.Mesh(geo,mat_1);
+			c2.rotateX(-Math.PI/2);
+			c2.position.set(0,0,13);
+//add tree3
+			var geo=new THREE.CylinderGeometry(8,1,6,32);
+			var c3=new THREE.Mesh(geo,mat_1);
+			c3.rotateX(-Math.PI/2);
+			c3.position.set(0,0,19);
+
+
+//add gift1
+			var geo=new THREE.BoxGeometry(3,3,3);
+			var gift1=new THREE.Mesh(geo,new THREE.MeshFaceMaterial(materials));
+			//c3.rotateX(-Math.PI/2);
+			gift1.position.set(3,-15,1.5);
+//add gift2
+			var geo=new THREE.BoxGeometry(3,3,3);
+			var gift2=new THREE.Mesh(geo,new THREE.MeshFaceMaterial(materials));
+			gift2.rotateZ(2);
+			gift2.rotateX(Math.PI/2);
+			gift2.position.set(8,-13,1.5);
+//add gift3
+			var geo=new THREE.BoxGeometry(2,2,2);
+			var gift3=new THREE.Mesh(geo,new THREE.MeshFaceMaterial(materials));
+			gift3.rotateZ(2);
+			gift3.rotateX(Math.PI/2);
+			gift3.position.set(0,-12,1);
+//add gift4
+			var geo=new THREE.BoxGeometry(3,3,2);
+			var gift4=new THREE.Mesh(geo,new THREE.MeshFaceMaterial(materials));
+			gift4.rotateZ(1);
+			gift4.position.set(-5,-11,1);
+
+//add gift2-1
+			var geo=new THREE.BoxGeometry(3,3,3);
+			var gift5=new THREE.Mesh(geo,new THREE.MeshFaceMaterial(materials_2));
+			//c3.rotateX(-Math.PI/2);
+			gift5.position.set(3,15,1.5);
+//add gift2-2
+			var geo=new THREE.BoxGeometry(3,3,3);
+			var gift6=new THREE.Mesh(geo,new THREE.MeshFaceMaterial(materials_2));
+			gift6.rotateZ(2);
+			gift6.rotateX(Math.PI/2);
+			gift6.position.set(8,13,1.5);
+//add gift2-3
+			var geo=new THREE.BoxGeometry(2,2,2);
+			var gift7=new THREE.Mesh(geo,new THREE.MeshFaceMaterial(materials_2));
+			gift7.rotateZ(2);
+			gift7.rotateX(Math.PI/2);
+			gift7.position.set(0,12,1);
+//add gift2-4
+			var geo=new THREE.BoxGeometry(3,3,2);
+			var gift8=new THREE.Mesh(geo,new THREE.MeshFaceMaterial(materials_2));
+			gift8.rotateZ(1);
+			gift8.position.set(-5,11,1);
+
+//add gift3-1
+			var geo=new THREE.BoxGeometry(3,3,3);
+			var gift9=new THREE.Mesh(geo,new THREE.MeshFaceMaterial(materials_3));
+			//c3.rotateX(-Math.PI/2);
+			gift9.position.set(-13,10,1.5);
+//add gift3-2
+			var geo=new THREE.BoxGeometry(3,3,3);
+			var gift10=new THREE.Mesh(geo,new THREE.MeshFaceMaterial(materials_3));
+			gift10.rotateZ(2);
+			gift10.rotateX(Math.PI/2);
+			gift10.position.set(-9,3,1.5);
+//add gift3-3
+			var geo=new THREE.BoxGeometry(2,2,2);
+			var gift11=new THREE.Mesh(geo,new THREE.MeshFaceMaterial(materials_3));
+			gift11.rotateZ(2);
+			gift11.rotateX(Math.PI/2);
+			gift11.position.set(-14,2,1);
+//add gift3-4
+			var geo=new THREE.BoxGeometry(3,3,2);
+			var gift12=new THREE.Mesh(geo,new THREE.MeshFaceMaterial(materials_3));
+			gift12.rotateZ(1);
+			gift12.position.set(-10,-9,1);
+
+//add gift4-1
+			var geo=new THREE.BoxGeometry(3,3,3);
+			var gift13=new THREE.Mesh(geo,new THREE.MeshFaceMaterial(materials_3));
+			//c3.rotateX(-Math.PI/2);
+			gift13.position.set(13,-10,1.5);
+//add gift4-2
+			var geo=new THREE.BoxGeometry(3,3,3);
+			var gift14=new THREE.Mesh(geo,new THREE.MeshFaceMaterial(materials_3));
+			gift14.rotateZ(2);
+			gift14.rotateX(Math.PI/2);
+			gift14.position.set(9,-3,1.5);
+//add gift4-3
+			var geo=new THREE.BoxGeometry(2,2,2);
+			var gift15=new THREE.Mesh(geo,new THREE.MeshFaceMaterial(materials_3));
+			gift15.rotateZ(2);
+			gift15.rotateX(Math.PI/2);
+			gift15.position.set(14,-2,1);
+//add gift4-4
+			var geo=new THREE.BoxGeometry(3,3,2);
+			var gift16=new THREE.Mesh(geo,new THREE.MeshFaceMaterial(materials_3));
+			gift16.rotateZ(1);
+			gift16.position.set(11,7,1);
+
+
+//add blue ball 1
+			var geo=new THREE.SphereGeometry(1,32,32);
+			var b1=new THREE.Mesh(geo,mat_ball_blue);
+			b1.position.set(-9,-3,8);//near/far,near/far,height
+//add blue ball 2
+			var geo=new THREE.SphereGeometry(1,32,32);
+			var b2=new THREE.Mesh(geo,mat_ball_blue);
+			b2.position.set(4,-7,13);//near/far,near/far,height
+//add blue ball 3
+			var geo=new THREE.SphereGeometry(1,32,32);
+			var b3=new THREE.Mesh(geo,mat_ball_blue);
+			b3.position.set(-4,4,19);//near/far,near/far,height
+//add blue ball 4
+			var geo=new THREE.SphereGeometry(1,32,32);
+			var b4=new THREE.Mesh(geo,mat_ball_blue);
+			b4.position.set(4,8.5,8);//near/far,near/far,height
+
+//add red ball 1
+			var geo=new THREE.SphereGeometry(1,32,32);
+			var r1=new THREE.Mesh(geo,mat_ball_red);
+			r1.position.set(1,-9,8);//near/far,near/far,height
+//add red ball 2
+			var geo=new THREE.SphereGeometry(1,32,32);
+			var r2=new THREE.Mesh(geo,mat_ball_red);
+			r2.position.set(-4,7,13);//near/far,near/far,height
+//add red ball 3
+			var geo=new THREE.SphereGeometry(1,32,32);
+			var r3=new THREE.Mesh(geo,mat_ball_red);
+			r3.position.set(-4,-4,19);//near/far,near/far,height
+//add red ball 4
+			var geo=new THREE.SphereGeometry(1,32,32);
+			var r4=new THREE.Mesh(geo,mat_ball_red);
+			r4.position.set(-7,6,8);//near/far,near/far,height
+//add red ball 5
+			var geo=new THREE.SphereGeometry(1,32,32);
+			var r5=new THREE.Mesh(geo,mat_ball_red);
+			r5.position.set(4,4,19);//near/far,near/far,height
+
+//add yellow ball 1
+			var geo=new THREE.SphereGeometry(1,32,32);
+			var y1=new THREE.Mesh(geo,mat_ball_yellow);
+			y1.position.set(9,-3,8);//near/far,near/far,height
+//add yellow ball 2
+			var geo=new THREE.SphereGeometry(1,32,32);
+			var y2=new THREE.Mesh(geo,mat_ball_yellow);
+			y2.position.set(8,3,13);//near/far,near/far,height
+//add yellow ball 3
+			var geo=new THREE.SphereGeometry(1,32,32);
+			var y3=new THREE.Mesh(geo,mat_ball_yellow);
+			y3.position.set(4,-4,19);//near/far,near/far,height
+//add yellow ball 4
+			var geo=new THREE.SphereGeometry(1,32,32);
+			var y4=new THREE.Mesh(geo,mat_ball_yellow);
+			y4.position.set(-4,-7,13);//near/far,near/far,height
+
+//Group
+			var group = new THREE.Group();
+			group.add(c0);
+			group.add(c1);
+			group.add(c2);
+			group.add(c3);
+			group.add(b1);
+			group.add(b2);
+			group.add(b3);
+			group.add(b4);
+			group.add(r1);
+			group.add(r2);
+			group.add(r3);
+			group.add(r4);
+			group.add(r5);
+			group.add(y1);
+			group.add(y2);
+			group.add(y3);
+			group.add(y4);
+			group.add(gift1);
+			group.add(gift2);
+			group.add(gift3);
+			group.add(gift4);
+			group.add(gift5);
+			group.add(gift6);
+			group.add(gift7);
+			group.add(gift8);
+			group.add(gift9);
+			group.add(gift10);
+			group.add(gift11);
+			group.add(gift12);
+			group.add(gift13);
+			group.add(gift14);
+			group.add(gift15);
+			group.add(gift16);
+			group.add(floor);
+			scene.add(group);
+
+//add Lights
+      var ambientLight = new THREE.AmbientLight( 0x999999, 0.1 );
+      scene.add( ambientLight );
+//1st ball light
+			var pointLight = new THREE.PointLight( 0xff9900, 1, 10,2 );
+      pointLight.position.set( -6, -8, 9 );
+      scene.add( pointLight );
+//2nd ball light
+			var pointLight2 = new THREE.PointLight( 0xff9900, 1, 10,2 );
+      pointLight2.position.set( 4,-7,13 );
+      scene.add( pointLight2 );
+//3rd ball light
+			var pointLight3 = new THREE.PointLight( 0xff9900, 1, 10,2 );
+      pointLight3.position.set(-1,-5,19 );
+      scene.add( pointLight3 );
+//add direction light
+			var light1 = new THREE.DirectionalLight( 0xefefff, 0.6 );
+				light1.position.set( 12, 2, 25 ).normalize();
+				scene.add( light1 );
+			var light2 = new THREE.DirectionalLight( 0xefefff, 0.2);
+				light2.position.set( 3, 4, -16 ).normalize();
+				scene.add( light2 );
+
+//add animate function
+			var animate = function () {
+				requestAnimationFrame( animate );
+
+				// group.rotation.x +=0.0005;
+				group.rotation.z +=0.002;
+				//controls.update();
+
+				renderer.render(scene, camera);
+			};
+			animate();
+		</script>
+	</body>
+</html>
