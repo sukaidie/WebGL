@@ -1,5 +1,5 @@
 # WebGL
-some small projects using WebGL
+some small projects using Three.js
 
 ### Requirements of ChrismasTree.html
 - The Christmas tree should contain textured spherical balls at various points.
